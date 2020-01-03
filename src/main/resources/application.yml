@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: zsr1401407..
+    url: jdbc:mysql://localhost:3306/chileme?useSSL=false&serverTimezone=UTC
+  jpa:
+    show-sql: true
+server:
+  servlet:
+    context-path: /chileme
