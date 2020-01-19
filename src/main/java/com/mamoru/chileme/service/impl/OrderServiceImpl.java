@@ -14,7 +14,7 @@ import com.mamoru.chileme.enums.ResultEnum;
 import com.mamoru.chileme.exception.SellException;
 import com.mamoru.chileme.service.OrderService;
 import com.mamoru.chileme.service.ProductService;
-import com.mamoru.chileme.utils.KeyUtils;
+import com.mamoru.chileme.utils.KeyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +25,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.transaction.Transactional;
-import java.beans.Transient;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public OrderDTO create(OrderDTO orderDTO) {
 
-        String orderId = KeyUtils.genUniqueKey();
+        String orderId = KeyUtil.genUniqueKey();
         BigDecimal orderAmount = new BigDecimal(BigInteger.ZERO);
 
         //1. 查询商品(数量， 价格)
@@ -66,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
                     .add(orderAmount);
 
             //订单详情入库
-            orderDetail.setDetailId(KeyUtils.genUniqueKey());
+            orderDetail.setDetailId(KeyUtil.genUniqueKey());
             orderDetail.setOrderId(orderId);
             BeanUtils.copyProperties(productInfo, orderDetail); //属性拷贝
             orderDetailDao.save(orderDetail);

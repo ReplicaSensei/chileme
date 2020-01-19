@@ -2,7 +2,7 @@ package com.mamoru.chileme.utils;
 
 import java.util.Random;
 
-public class KeyUtils {
+public class KeyUtil {
 
     /**
      * 生成唯一的主键

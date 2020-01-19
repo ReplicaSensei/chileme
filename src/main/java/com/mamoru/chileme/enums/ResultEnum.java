@@ -3,7 +3,7 @@ package com.mamoru.chileme.enums;
 import lombok.Getter;
 
 @Getter
-public enum ResultEnum {
+public enum ResultEnum implements CodeEnum {
 
     SUCCESS(0, "成功"),
 

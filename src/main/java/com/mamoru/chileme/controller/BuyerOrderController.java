@@ -8,7 +8,6 @@ import com.mamoru.chileme.form.OrderForm;
 import com.mamoru.chileme.service.BuyerService;
 import com.mamoru.chileme.service.OrderService;
 import com.mamoru.chileme.utils.ResultVOUtil;
-import com.mamoru.chileme.utils.serializer.Date2LongSerializer;
 import com.mamoru.chileme.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ *  买家页面
  */
 
 @RestController

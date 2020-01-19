@@ -9,5 +9,4 @@ spring:
   jackson:
     default-property-inclusion: non_null
 server:
-  servlet:
     context-path: /chileme
