@@ -47,6 +47,12 @@ public class SellerOrderController {
         return new ModelAndView("order/list", map);
     }
 
+    /**
+     * 取消订单
+     * @param orderId
+     * @param map
+     * @return
+     */
     @GetMapping("/cancel")
     public ModelAndView cancel(@RequestParam("orderId") String orderId,
                                Map<String, Object> map) {
@@ -66,6 +72,12 @@ public class SellerOrderController {
         return new ModelAndView("common/success");
     }
 
+    /**
+     * 订单详情
+     * @param orderId
+     * @param map
+     * @return
+     */
     @GetMapping("/detail")
     public ModelAndView detail(@RequestParam("orderId") String orderId,
                                Map<String, Object> map) {
@@ -83,6 +95,12 @@ public class SellerOrderController {
         return new ModelAndView("order/detail", map);
     }
 
+    /**
+     * 完结订单
+     * @param orderId
+     * @param map
+     * @return
+     */
     @GetMapping("/finish")
     public ModelAndView finish(@RequestParam("orderId") String orderId,
                                Map<String, Object> map) {

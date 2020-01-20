@@ -12,7 +12,7 @@
         <div class="container-fluid">
             <div class="row clearfix">
                 <div class="col-md-12 column">
-                    <form role="form" method="post" action="/sell/seller/product/save">
+                    <form role="form" method="post" action="/chileme/seller/product/save">
                         <div class="form-group">
                             <label>名称</label>
                             <input name="productName" type="text" class="form-control" value="${(productInfo.productName)!''}"/>
@@ -46,6 +46,10 @@
                                     </option>
                                 </#list>
                             </select>
+                        </div>
+                        <div class="form-group">
+                            <label>状态</label>
+                            <input name="productStatus" type="text" class="form-control" value="已下架,需要手动上架" readonly="readonly" onfocus="1"/>
                         </div>
                         <input hidden type="text" name="productId" value="${(productInfo.productId)!''}">
                         <button type="submit" class="btn btn-default">提交</button>

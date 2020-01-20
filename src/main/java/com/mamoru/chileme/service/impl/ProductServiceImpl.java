@@ -40,6 +40,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductInfo save(ProductInfo productInfo) {
+        //每次新增或修改商品属性，商品会自动下架
+        productInfo.setProductStatus(ProductStatusEnum.DOWN.getCode());
         return dao.save(productInfo);
     }
 
@@ -79,4 +81,33 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Override
+    public ProductInfo offSale(String productId) {
+        ProductInfo productInfo = dao.findOne(productId);
+        if (productId == null) {
+            throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+        }
+        if (productInfo.getProductStatusEnum() == ProductStatusEnum.DOWN) {
+            throw new SellException(ResultEnum.PRODUCT_STATUS_ERROR);
+        }
+
+        //更新
+        productInfo.setProductStatus(ProductStatusEnum.DOWN.getCode());
+        return dao.save(productInfo);
+    }
+
+    @Override
+    public ProductInfo onSale(String productId) {
+        ProductInfo productInfo = dao.findOne(productId);
+        if (productId == null) {
+            throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+        }
+        if (productInfo.getProductStatusEnum() == ProductStatusEnum.UP) {
+            throw new SellException(ResultEnum.PRODUCT_STATUS_ERROR);
+        }
+
+        //更新
+        productInfo.setProductStatus(ProductStatusEnum.UP.getCode());
+        return dao.save(productInfo);
+    }
 }

@@ -1,5 +1,9 @@
 package com.mamoru.chileme.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mamoru.chileme.enums.PayStatusEnum;
+import com.mamoru.chileme.enums.ProductStatusEnum;
+import com.mamoru.chileme.utils.EnumUtil;
 import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -7,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Entity
 @DynamicUpdate
@@ -37,6 +42,10 @@ public class ProductInfo {
     /** 类目编号. */
     private Integer categoryType;
 
+    private Date createTime;
+
+    private Date updateTime;
+
     public ProductInfo() {
     }
 
@@ -50,4 +59,10 @@ public class ProductInfo {
         this.productStatus = productStatus;
         this.categoryType = categoryType;
     }
+
+    @JsonIgnore
+    public ProductStatusEnum getProductStatusEnum() {
+        return EnumUtil.getByCode(productStatus, ProductStatusEnum.class);
+    }
+
 }
