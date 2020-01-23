@@ -1,6 +1,8 @@
 package com.mamoru.chileme.service.impl;
 
+import com.mamoru.chileme.dao.BuyerInfoDao;
 import com.mamoru.chileme.dto.OrderDTO;
+import com.mamoru.chileme.entity.BuyerInfo;
 import com.mamoru.chileme.enums.ResultEnum;
 import com.mamoru.chileme.exception.ChilemeException;
 import com.mamoru.chileme.service.BuyerService;
@@ -15,6 +17,9 @@ public class BuyerServiceImpl implements BuyerService {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private BuyerInfoDao dao;
 
     @Override
     public OrderDTO findOrderOne(String openid, String orderId) {
@@ -42,5 +47,10 @@ public class BuyerServiceImpl implements BuyerService {
         }
         return orderDTO;
 
+    }
+
+    @Override
+    public BuyerInfo findBuyerInfoByOpenid(String openid) {
+        return dao.findByOpenid(openid);
     }
 }

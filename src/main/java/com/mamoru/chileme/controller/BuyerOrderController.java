@@ -47,7 +47,7 @@ public class BuyerOrderController {
             throw new ChilemeException(ResultEnum.PARAM_ERROR.getCode(),
                     bindingResult.getFieldError().getDefaultMessage());
         }
-
+        //转换成列表，一次可订多个菜品, 已在OrderForm2OrderDTOConvert中完成
         OrderDTO orderDTO = OrderForm2OrderDTOConverter.convert(orderForm);
 
         if (CollectionUtils.isEmpty(orderDTO.getOrderDetailList())) {

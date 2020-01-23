@@ -49,9 +49,7 @@ public class SellerUserController {
     public ModelAndView save(@Valid SellerForm form,
                              BindingResult bindingResult,
                              HttpServletResponse response,
-                             HttpServletRequest request,
                              Map<String, Object> map) {
-        request.getParameter("version");
 
         if (bindingResult.hasErrors()) {
             map.put("msg", bindingResult.getFieldError().getDefaultMessage());

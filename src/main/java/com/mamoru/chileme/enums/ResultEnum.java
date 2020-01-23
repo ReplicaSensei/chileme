@@ -43,6 +43,12 @@ public enum ResultEnum implements CodeEnum {
 
     LOGOUT_SUCCESS(26, "登出成功"),
 
+    OPENID_EMPTY(27, "用户名不能为空"),
+
+    PASSWORD_EMPTY(28, "密码不能为空"),
+
+    USER_NOT_EXIST(29, "用户不存在"),
+
     ;
 
     private Integer code;

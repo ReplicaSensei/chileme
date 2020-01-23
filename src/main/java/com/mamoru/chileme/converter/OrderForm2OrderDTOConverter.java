@@ -25,6 +25,7 @@ public class OrderForm2OrderDTOConverter {
         orderDTO.setBuyerAddress(orderForm.getAddress());
         orderDTO.setBuyerOpenid(orderForm.getOpenid());
 
+        //订单详情转换成详情列表， 一个订单可点多个菜品
         List<OrderDetail> orderDetailList = new ArrayList<>();
         try {
             orderDetailList = gson.fromJson(orderForm.getItems(), new TypeToken<List<OrderDetail>>(){}.getType());
