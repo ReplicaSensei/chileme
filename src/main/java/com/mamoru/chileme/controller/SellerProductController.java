@@ -2,8 +2,7 @@ package com.mamoru.chileme.controller;
 
 import com.mamoru.chileme.entity.ProductCategory;
 import com.mamoru.chileme.entity.ProductInfo;
-import com.mamoru.chileme.enums.ProductStatusEnum;
-import com.mamoru.chileme.exception.SellException;
+import com.mamoru.chileme.exception.ChilemeException;
 import com.mamoru.chileme.form.ProductForm;
 import com.mamoru.chileme.service.CategoryService;
 import com.mamoru.chileme.service.ProductService;
@@ -49,7 +48,7 @@ public class SellerProductController {
      */
     @GetMapping("/list")
     public ModelAndView list(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                             @RequestParam(value = "size", defaultValue = "10") Integer size,
+                             @RequestParam(value = "size", defaultValue = "8") Integer size,
                              Map<String, Object> map) {
         PageRequest request = new PageRequest(page-1, size);
         Page<ProductInfo> productInfoPage = productService.findAll(request);
@@ -70,7 +69,7 @@ public class SellerProductController {
                                Map<String, Object> map) {
         try {
             productService.offSale(productId);
-        } catch (SellException e){
+        } catch (ChilemeException e){
             map.put("msg", e.getMessage());
             map.put("url", "/chileme/seller/product/list");
             return new ModelAndView("common/error", map);
@@ -91,7 +90,7 @@ public class SellerProductController {
                                Map<String, Object> map) {
         try {
             productService.onSale(productId);
-        } catch (SellException e) {
+        } catch (ChilemeException e) {
             map.put("msg", e.getMessage());
             map.put("url", "/chileme/seller/product/list");
             return new ModelAndView("common/error", map);
@@ -136,7 +135,7 @@ public class SellerProductController {
                              Map<String, Object> map) {
         if (bindingResult.hasErrors()) {
             map.put("msg", bindingResult.getFieldError().getDefaultMessage());
-            map.put("url", "/sell/seller/product/index");
+            map.put("url", "/chileme/seller/product/index");
             return new ModelAndView("common/error", map);
         }
 
@@ -150,7 +149,7 @@ public class SellerProductController {
             }
             BeanUtils.copyProperties(form, productInfo);
             productService.save(productInfo);
-        } catch (SellException e) {
+        } catch (ChilemeException e) {
             map.put("msg", e.getMessage());
             map.put("url", "/chileme/seller/product/index");
             return new ModelAndView("common/error", map);

@@ -1,7 +1,7 @@
 package com.mamoru.chileme.controller;
 
 import com.mamoru.chileme.entity.ProductCategory;
-import com.mamoru.chileme.exception.SellException;
+import com.mamoru.chileme.exception.ChilemeException;
 import com.mamoru.chileme.form.CategoryForm;
 import com.mamoru.chileme.service.CategoryService;
 import lombok.extern.slf4j.Slf4j;
@@ -78,7 +78,7 @@ public class SellerCategoryController {
             BeanUtils.copyProperties(form, productCategory);
 
             categoryService.save(productCategory);
-        } catch (SellException e) {
+        } catch (ChilemeException e) {
             map.put("msg", e.getMessage());
             map.put("url", "/chileme/seller/product/index");
             return new ModelAndView("common/error", map);

@@ -5,17 +5,15 @@ import com.mamoru.chileme.dto.CartDTO;
 import com.mamoru.chileme.entity.ProductInfo;
 import com.mamoru.chileme.enums.ProductStatusEnum;
 import com.mamoru.chileme.enums.ResultEnum;
-import com.mamoru.chileme.exception.SellException;
+import com.mamoru.chileme.exception.ChilemeException;
 import com.mamoru.chileme.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -51,7 +49,7 @@ public class ProductServiceImpl implements ProductService {
         for (CartDTO cartDTO: cartDTOList) {
             ProductInfo productInfo = dao.findOne(cartDTO.getProductId());
             if (productInfo == null) {
-                throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+                throw new ChilemeException(ResultEnum.PRODUCT_NOT_EXIST);
             }
             Integer result = productInfo.getProductStock() + cartDTO.getProductQuantity();
             productInfo.setProductStock(result);
@@ -67,12 +65,12 @@ public class ProductServiceImpl implements ProductService {
         for (CartDTO cartDTO: cartDTOList) {
             ProductInfo productInfo = dao.findOne(cartDTO.getProductId());
             if (productInfo == null) {
-                throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+                throw new ChilemeException(ResultEnum.PRODUCT_NOT_EXIST);
             }
 
             Integer result = productInfo.getProductStock() - cartDTO.getProductQuantity();
             if (result < 0) {
-                throw new SellException(ResultEnum.PRODUCT_STOCK_ERROR);
+                throw new ChilemeException(ResultEnum.PRODUCT_STOCK_ERROR);
             }
 
             productInfo.setProductStock(result);
@@ -85,10 +83,10 @@ public class ProductServiceImpl implements ProductService {
     public ProductInfo offSale(String productId) {
         ProductInfo productInfo = dao.findOne(productId);
         if (productId == null) {
-            throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+            throw new ChilemeException(ResultEnum.PRODUCT_NOT_EXIST);
         }
         if (productInfo.getProductStatusEnum() == ProductStatusEnum.DOWN) {
-            throw new SellException(ResultEnum.PRODUCT_STATUS_ERROR);
+            throw new ChilemeException(ResultEnum.PRODUCT_STATUS_ERROR);
         }
 
         //更新
@@ -100,10 +98,10 @@ public class ProductServiceImpl implements ProductService {
     public ProductInfo onSale(String productId) {
         ProductInfo productInfo = dao.findOne(productId);
         if (productId == null) {
-            throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+            throw new ChilemeException(ResultEnum.PRODUCT_NOT_EXIST);
         }
         if (productInfo.getProductStatusEnum() == ProductStatusEnum.UP) {
-            throw new SellException(ResultEnum.PRODUCT_STATUS_ERROR);
+            throw new ChilemeException(ResultEnum.PRODUCT_STATUS_ERROR);
         }
 
         //更新

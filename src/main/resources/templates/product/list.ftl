@@ -60,21 +60,21 @@
                     <#if currentPage lte 1>
                         <li class="disabled"><a href="#">上一页</a></li>
                     <#else>
-                        <li><a href="/chileme/seller/order/list?page=${currentPage - 1}&size=${size}">上一页</a></li>
+                        <li><a href="/chileme/seller/product/list?page=${currentPage - 1}&size=${size}">上一页</a></li>
                     </#if>
 
                     <#list 1..productInfoPage.getTotalPages() as index>
                         <#if currentPage == index>
                             <li class="disabled"><a href="#">${index}</a></li>
                         <#else>
-                            <li><a href="/chileme/seller/order/list?page=${index}&size=${size}">${index}</a></li>
+                            <li><a href="/chileme/seller/product/list?page=${index}&size=${size}">${index}</a></li>
                         </#if>
                     </#list>
 
                     <#if currentPage gte productInfoPage.getTotalPages()>
                         <li class="disabled"><a href="#">下一页</a></li>
                     <#else>
-                        <li><a href="/chileme/seller/order/list?page=${currentPage + 1}&size=${size}">下一页</a></li>
+                        <li><a href="/chileme/seller/product/list?page=${currentPage + 1}&size=${size}">下一页</a></li>
                     </#if>
                     </ul>
                 </div>

@@ -2,7 +2,7 @@ package com.mamoru.chileme.service.impl;
 
 import com.mamoru.chileme.dto.OrderDTO;
 import com.mamoru.chileme.enums.ResultEnum;
-import com.mamoru.chileme.exception.SellException;
+import com.mamoru.chileme.exception.ChilemeException;
 import com.mamoru.chileme.service.BuyerService;
 import com.mamoru.chileme.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ public class BuyerServiceImpl implements BuyerService {
         OrderDTO orderDTO = checkOrderOwner(openid, orderId);
         if(orderDTO==null){
             log.error("【取消订单】查不到该订单， orderId={}", orderId);
-            throw new SellException(ResultEnum.ORDER_NOT_EXIST);
+            throw new ChilemeException(ResultEnum.ORDER_NOT_EXIST);
         }
         return orderService.cancel(orderDTO);
     }
@@ -38,7 +38,7 @@ public class BuyerServiceImpl implements BuyerService {
         }
         if (!orderDTO.getBuyerOpenid().equalsIgnoreCase(openid)) {
             log.error("【查询订单】订单的openid不一致. openid={}, orderDTO={}", openid, orderDTO);
-            throw new SellException(ResultEnum.ORDER_OWNER_ERROR);
+            throw new ChilemeException(ResultEnum.ORDER_OWNER_ERROR);
         }
         return orderDTO;
 

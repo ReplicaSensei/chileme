@@ -17,7 +17,10 @@ spring:
     expose-request-attributes: true
     expose-session-attributes: true
     request-context-attribute: request
+  redis:
+    host: 192.168.1.106
+    port: 6379
 server:
     context-path: /chileme
-
-
+projectUrl:
+  chileme: http://chileme.natapp1.cc

@@ -3,7 +3,7 @@ package com.mamoru.chileme.controller;
 import com.mamoru.chileme.converter.OrderForm2OrderDTOConverter;
 import com.mamoru.chileme.dto.OrderDTO;
 import com.mamoru.chileme.enums.ResultEnum;
-import com.mamoru.chileme.exception.SellException;
+import com.mamoru.chileme.exception.ChilemeException;
 import com.mamoru.chileme.form.OrderForm;
 import com.mamoru.chileme.service.BuyerService;
 import com.mamoru.chileme.service.OrderService;
@@ -44,7 +44,7 @@ public class BuyerOrderController {
                                                 BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             log.error("【创建订单】参数不正确, orderForm={}", orderForm);
-            throw new SellException(ResultEnum.PARAM_ERROR.getCode(),
+            throw new ChilemeException(ResultEnum.PARAM_ERROR.getCode(),
                     bindingResult.getFieldError().getDefaultMessage());
         }
 
@@ -52,7 +52,7 @@ public class BuyerOrderController {
 
         if (CollectionUtils.isEmpty(orderDTO.getOrderDetailList())) {
             log.error("【创建订单】购物车不能为空");
-            throw new SellException(ResultEnum.CART_EMPTY);
+            throw new ChilemeException(ResultEnum.CART_EMPTY);
         }
 
         OrderDTO createResult = orderService.create(orderDTO);
@@ -68,7 +68,7 @@ public class BuyerOrderController {
                                          @RequestParam(value = "size", defaultValue = "10") Integer size) {
         if (StringUtils.isEmpty(openid)) {
             log.error("【查询订单列表】openid为空");
-            throw new SellException(ResultEnum.PARAM_ERROR);
+            throw new ChilemeException(ResultEnum.PARAM_ERROR);
         }
 
         PageRequest request = new PageRequest(page, size);

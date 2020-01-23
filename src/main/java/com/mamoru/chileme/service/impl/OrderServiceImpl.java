@@ -11,7 +11,7 @@ import com.mamoru.chileme.entity.ProductInfo;
 import com.mamoru.chileme.enums.OrderStatusEnum;
 import com.mamoru.chileme.enums.PayStatusEnum;
 import com.mamoru.chileme.enums.ResultEnum;
-import com.mamoru.chileme.exception.SellException;
+import com.mamoru.chileme.exception.ChilemeException;
 import com.mamoru.chileme.service.OrderService;
 import com.mamoru.chileme.service.ProductService;
 import com.mamoru.chileme.utils.KeyUtil;
@@ -54,7 +54,7 @@ public class OrderServiceImpl implements OrderService {
         for (OrderDetail orderDetail : orderDTO.getOrderDetailList()){
             ProductInfo productInfo = productService.findOne(orderDetail.getProductId());
             if(productInfo == null){
-                throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+                throw new ChilemeException(ResultEnum.PRODUCT_NOT_EXIST);
             }
 
             //2. 计算订单总价
@@ -94,12 +94,12 @@ public class OrderServiceImpl implements OrderService {
 
         OrderMaster orderMaster = orderMasterDao.findOne(orderId);
         if (orderMaster == null) {
-            throw new SellException(ResultEnum.ORDER_NOT_EXIST);
+            throw new ChilemeException(ResultEnum.ORDER_NOT_EXIST);
         }
 
         List<OrderDetail> orderDetailList = orderDetailDao.findByOrderId(orderId);
         if (CollectionUtils.isEmpty(orderDetailList)) {
-            throw new SellException(ResultEnum.ORDERDETAIL_NOT_EXIST);
+            throw new ChilemeException(ResultEnum.ORDERDETAIL_NOT_EXIST);
         }
 
         OrderDTO orderDTO = new OrderDTO();
@@ -127,7 +127,7 @@ public class OrderServiceImpl implements OrderService {
         //判断订单状态
         if (!orderDTO.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())) {
             log.error("【取消订单】订单状态不正确, orderId={}, orderStatus={}", orderDTO.getOrderId(), orderDTO.getOrderStatus());
-            throw new SellException(ResultEnum.ORDER_STATUS_ERROR);
+            throw new ChilemeException(ResultEnum.ORDER_STATUS_ERROR);
         }
 
         //修改订单状态
@@ -136,13 +136,13 @@ public class OrderServiceImpl implements OrderService {
         OrderMaster updateResult = orderMasterDao.save(orderMaster);
         if (updateResult == null) {
             log.error("【取消订单】更新失败, orderMaster={}", orderMaster);
-            throw new SellException(ResultEnum.ORDER_UPDATE_FAIL);
+            throw new ChilemeException(ResultEnum.ORDER_UPDATE_FAIL);
         }
 
         //返回库存
         if (CollectionUtils.isEmpty(orderDTO.getOrderDetailList())) {
             log.error("【取消订单】订单中无商品详情, orderDTO={}", orderDTO);
-            throw new SellException(ResultEnum.ORDER_DETAIL_EMPTY);
+            throw new ChilemeException(ResultEnum.ORDER_DETAIL_EMPTY);
         }
         List<CartDTO> cartDTOList = orderDTO.getOrderDetailList().stream()
                 .map(e -> new CartDTO(e.getProductId(), e.getProductQuantity()))
@@ -162,7 +162,7 @@ public class OrderServiceImpl implements OrderService {
         //判断订单状态
         if (!orderDTO.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())) {
             log.error("【完结订单】订单状态不正确, orderId={}, orderStatus={}", orderDTO.getOrderId(), orderDTO.getOrderStatus());
-            throw new SellException(ResultEnum.ORDER_STATUS_ERROR);
+            throw new ChilemeException(ResultEnum.ORDER_STATUS_ERROR);
         }
 
         //修改订单状态
@@ -172,7 +172,7 @@ public class OrderServiceImpl implements OrderService {
         OrderMaster updateResult = orderMasterDao.save(orderMaster);
         if (updateResult == null) {
             log.error("【完结订单】更新失败, orderMaster={}", orderMaster);
-            throw new SellException(ResultEnum.ORDER_UPDATE_FAIL);
+            throw new ChilemeException(ResultEnum.ORDER_UPDATE_FAIL);
         }
 
         return orderDTO;
@@ -184,13 +184,13 @@ public class OrderServiceImpl implements OrderService {
         //判断订单状态
         if (!orderDTO.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())) {
             log.error("【订单支付完成】订单状态不正确, orderId={}, orderStatus={}", orderDTO.getOrderId(), orderDTO.getOrderStatus());
-            throw new SellException(ResultEnum.ORDER_STATUS_ERROR);
+            throw new ChilemeException(ResultEnum.ORDER_STATUS_ERROR);
         }
 
         //判断支付状态
         if (!orderDTO.getPayStatus().equals(PayStatusEnum.WAIT.getCode())) {
             log.error("【订单支付完成】订单支付状态不正确, orderDTO={}", orderDTO);
-            throw new SellException(ResultEnum.ORDER_PAY_STATUS_ERROR);
+            throw new ChilemeException(ResultEnum.ORDER_PAY_STATUS_ERROR);
         }
 
         //修改支付状态
@@ -200,7 +200,7 @@ public class OrderServiceImpl implements OrderService {
         OrderMaster updateResult = orderMasterDao.save(orderMaster);
         if (updateResult == null) {
             log.error("【订单支付完成】更新失败, orderMaster={}", orderMaster);
-            throw new SellException(ResultEnum.ORDER_UPDATE_FAIL);
+            throw new ChilemeException(ResultEnum.ORDER_UPDATE_FAIL);
         }
 
         return orderDTO;

@@ -3,7 +3,7 @@ package com.mamoru.chileme.controller;
 
 import com.mamoru.chileme.dto.OrderDTO;
 import com.mamoru.chileme.enums.ResultEnum;
-import com.mamoru.chileme.exception.SellException;
+import com.mamoru.chileme.exception.ChilemeException;
 import com.mamoru.chileme.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +60,7 @@ public class SellerOrderController {
             OrderDTO orderDTO = orderService.findOne(orderId);
             orderService.cancel(orderDTO);
 
-        } catch (SellException e){
+        } catch (ChilemeException e){
             log.error("【卖家端取消订单】 发生异常", e);
             map.put("msg", e.getMessage());
             map.put("url", "/chileme/seller/order/list");
@@ -84,7 +84,7 @@ public class SellerOrderController {
         OrderDTO orderDTO = new OrderDTO();
         try {
             orderDTO = orderService.findOne(orderId);
-        }catch (SellException e) {
+        }catch (ChilemeException e) {
             log.error("【卖家端查询订单详情】发生异常{}", e);
             map.put("msg", e.getMessage());
             map.put("url", "/chileme/seller/order/list");
@@ -107,7 +107,7 @@ public class SellerOrderController {
         try {
             OrderDTO orderDTO = orderService.findOne(orderId);
             orderService.finish(orderDTO);
-        } catch (SellException e) {
+        } catch (ChilemeException e) {
             log.error("【卖家端查询订单详情】发生异常{}", e);
             map.put("msg", e.getMessage());
             map.put("url", "/chileme/seller/order/list");

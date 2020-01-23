@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import com.mamoru.chileme.dto.OrderDTO;
 import com.mamoru.chileme.entity.OrderDetail;
 import com.mamoru.chileme.enums.ResultEnum;
-import com.mamoru.chileme.exception.SellException;
+import com.mamoru.chileme.exception.ChilemeException;
 import com.mamoru.chileme.form.OrderForm;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,7 +30,7 @@ public class OrderForm2OrderDTOConverter {
             orderDetailList = gson.fromJson(orderForm.getItems(), new TypeToken<List<OrderDetail>>(){}.getType());
         } catch (Exception e) {
             log.error("【对象转换】错误, string={}", orderForm.getItems());
-            throw new SellException(ResultEnum.PARAM_ERROR);
+            throw new ChilemeException(ResultEnum.PARAM_ERROR);
         }
         orderDTO.setOrderDetailList(orderDetailList);
 
