@@ -5,12 +5,16 @@ import com.mamoru.chileme.constant.CookieConstant;
 import com.mamoru.chileme.constant.RedisConstant;
 import com.mamoru.chileme.entity.SellerInfo;
 import com.mamoru.chileme.enums.ResultEnum;
+import com.mamoru.chileme.exception.ChilemeException;
 import com.mamoru.chileme.form.SellerForm;
 import com.mamoru.chileme.service.SellerService;
 import com.mamoru.chileme.utils.CookieUtil;
+import com.mamoru.chileme.utils.KeyUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -18,7 +22,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -46,9 +52,10 @@ public class SellerUserController {
     }
 
     @PostMapping("/submit")
-    public ModelAndView save(@Valid SellerForm form,
+    public ModelAndView submit(@Valid SellerForm form,
                              BindingResult bindingResult,
                              HttpServletResponse response,
+                             HttpSession session,
                              Map<String, Object> map) {
 
         if (bindingResult.hasErrors()) {
@@ -89,9 +96,50 @@ public class SellerUserController {
             //3.设置cookie
             CookieUtil.set(response, CookieConstant.TOKEN, token, CookieConstant.EXPIRE);
             redisTemplate.opsForValue().set(String.format(RedisConstant.TOKEN_PREFIX, token), form.getOpenid(), expire, TimeUnit.SECONDS);
+            //4.设置session
+            session.setAttribute("openid", form.getOpenid());
 
             return new ModelAndView("redirect:" + projectUrlConfig.getChileme() + "/chileme/seller/order/list");
         }
+    }
+
+    @GetMapping("/index")
+    public ModelAndView index(HttpSession session,
+                              Map<String, Object> map) {
+        String openid = (String)session.getAttribute("openid");
+        if (!StringUtils.isEmpty(openid)) {
+            SellerInfo sellerInfo = sellerService.findSellerInfoByOpenid(openid);
+            map.put("sellerInfo", sellerInfo);
+        }
+        return new ModelAndView("seller/index");
+    }
+
+    @PostMapping("/save")
+    public ModelAndView save(@Valid SellerForm form,
+                             BindingResult bindingResult,
+                             Map<String, Object> map) {
+        if (bindingResult.hasErrors()) {
+            map.put("msg", bindingResult.getFieldError().getDefaultMessage());
+            map.put("url", "/chileme/seller/index");
+            return new ModelAndView("common/error", map);
+        }
+
+        SellerInfo sellerInfo = new SellerInfo();
+        try {
+            if (!StringUtils.isEmpty(form.getOpenid())) {
+                sellerInfo = sellerService.findSellerInfoByOpenid(form.getOpenid());
+            }
+            BeanUtils.copyProperties(form, sellerInfo);
+            sellerService.save(sellerInfo);
+        } catch (ChilemeException e) {
+            map.put("msg", e.getMessage());
+            map.put("url", "/chileme/seller/index");
+            return new ModelAndView("common/error", map);
+        }
+
+        map.put("url", "/chileme/seller/product/list");
+
+        return new ModelAndView("common/success", map);
     }
 
     @GetMapping("/logout")

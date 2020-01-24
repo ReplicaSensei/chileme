@@ -26,6 +26,10 @@
         </li>
 
         <li>
+            <a href="/chileme/seller/index"><i class="fa fa-fw fa-list-alt"></i> 修改账号信息</a>
+        </li>
+
+        <li>
             <a href="/chileme/seller/logout"><i class="fa fa-fw fa-list-alt"></i> 登出</a>
         </li>
     </ul>

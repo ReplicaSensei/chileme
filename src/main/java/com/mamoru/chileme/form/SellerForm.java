@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class SellerForm {
 
+    private String username;
+
     private String openid;
 
     private String password;

@@ -16,4 +16,9 @@ public class SellerServiceImpl implements SellerService {
     public SellerInfo findSellerInfoByOpenid(String openid) {
         return dao.findByOpenid(openid);
     }
+
+    @Override
+    public SellerInfo save(SellerInfo sellerInfo) {
+        return dao.save(sellerInfo);
+    }
 }

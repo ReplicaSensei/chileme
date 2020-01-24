@@ -14,4 +14,6 @@ public interface SellerService {
      */
     SellerInfo findSellerInfoByOpenid(String openid);
 
+    SellerInfo save(SellerInfo sellerInfo);
+
 }
