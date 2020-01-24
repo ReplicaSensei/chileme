@@ -27,7 +27,7 @@
             <input name="password" type="password" class="form-control" placeholder="Please enter your password">
         </div>
         <input hidden type="text" name="productId">
-        <button style="margin-top: 20px" type="submit" class="btn btn-success">Submit</button>
+        <button style="margin-top: 20px" type="submit" class="btn btn-warning btn-lg btn-block">Submit</button>
     </form>
 </div>
 </body>
