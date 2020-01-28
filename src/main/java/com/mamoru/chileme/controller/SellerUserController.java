@@ -32,6 +32,8 @@ import java.util.concurrent.TimeUnit;
  */
 @Controller
 @RequestMapping("/seller")
+@CrossOrigin(value = "*", origins = "*", methods = {}, maxAge = 3600, allowCredentials = "true",
+        allowedHeaders = "Origin, X-Requested-With, Content-Type, Accept")
 public class SellerUserController {
 
     @Autowired

@@ -25,12 +25,17 @@
             </ul>
         </li>
 
-        <li>
-            <a href="/chileme/seller/index"><i class="fa fa-fw fa-list-alt"></i> 修改账号信息</a>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-fw fa-plus"></i> 账户操作 <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header"></li>
+                <li><a href="/chileme/seller/index"><i class="fa fa-fw fa-list-alt"></i> 修改信息</a></li>
+                <li><a href="/chileme/seller/logout"><i class="fa fa-fw fa-list-alt"></i> 登出账户</a></li>
+            </ul>
         </li>
 
-        <li>
-            <a href="/chileme/seller/logout"><i class="fa fa-fw fa-list-alt"></i> 登出</a>
-        </li>
+
+
+
     </ul>
 </nav>

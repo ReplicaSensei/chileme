@@ -9,6 +9,7 @@ import com.mamoru.chileme.vo.ProductVO;
 import com.mamoru.chileme.vo.ResultVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/buyer/product")
+@CrossOrigin(value = "*", origins = "*", methods = {}, maxAge = 3600, allowCredentials = "true",
+        allowedHeaders = "Origin, X-Requested-With, Content-Type, Accept")
 public class BuyerProductController {
 
     @Autowired

@@ -50,6 +50,11 @@ public class BuyerServiceImpl implements BuyerService {
     }
 
     @Override
+    public BuyerInfo save(BuyerInfo buyerInfo) {
+        return dao.save(buyerInfo);
+    }
+
+    @Override
     public BuyerInfo findBuyerInfoByOpenid(String openid) {
         return dao.findByOpenid(openid);
     }

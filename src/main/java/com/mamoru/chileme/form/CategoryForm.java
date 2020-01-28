@@ -10,6 +10,8 @@ public class CategoryForm {
     /** 类目名字. */
     private String categoryName;
 
+    private String categoryIcon;
+
     /** 类目编号. */
     private Integer categoryType;
 

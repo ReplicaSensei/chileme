@@ -18,6 +18,7 @@
                             <th>类目id</th>
                             <th>名字</th>
                             <th>type</th>
+                            <th>图片</th>
                             <th>创建时间</th>
                             <th>修改时间</th>
                             <th>操作</th>
@@ -30,6 +31,7 @@
                             <td>${category.categoryId}</td>
                             <td>${category.categoryName}</td>
                             <td>${category.categoryType}</td>
+                            <td><img height="150" width="200" src="${category.categoryIcon}" alt=""></td>
                             <td>${category.createTime}</td>
                             <td>${category.updateTime}</td>
                             <td><a href="/chileme/seller/category/index?categoryId=${category.categoryId}">修改</a></td>

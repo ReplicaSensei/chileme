@@ -30,6 +30,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/buyer/order")
 @Slf4j
+@CrossOrigin(value = "*", origins = "*", methods = {}, maxAge = 3600, allowCredentials = "true",
+        allowedHeaders = "Origin, X-Requested-With, Content-Type, Accept")
 public class BuyerOrderController {
 
     @Autowired

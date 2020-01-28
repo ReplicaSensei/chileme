@@ -14,4 +14,7 @@ public interface BuyerService {
     //取消订单
     OrderDTO cancelOrder(String openid, String orderId);
 
+    //保存买家信息
+    BuyerInfo save(BuyerInfo buyerInfo);
+
 }

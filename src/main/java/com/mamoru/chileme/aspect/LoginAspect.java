@@ -21,13 +21,13 @@ import javax.servlet.http.HttpServletRequest;
 @Aspect
 @Component
 @Slf4j
-public class SellerLoginAspect {
+public class LoginAspect {
 
     @Autowired
     private StringRedisTemplate redisTemplate;
 
     @Pointcut("execution(public * com.mamoru.chileme.controller.Seller*.*(..))" +
-    "&& !execution(public * com.mamoru.chileme.controller.SellerUserController.*(..))")
+            "&& !execution(public * com.mamoru.chileme.controller.SellerUserController.*(..))")
     private void verify() {}
 
     @Before("verify()")

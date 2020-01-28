@@ -21,6 +21,11 @@
                             <label>type</label>
                             <input name="categoryType" type="number" class="form-control" value="${(productCategory.categoryType)!''}"/>
                         </div>
+                        <div class="form-group">
+                            <label>图片</label>
+                            <img height="100" width="100" src="${(productCategory.categoryIcon)!''}" alt="">
+                            <input name="categoryIcon" type="text" class="form-control" value="${(productCategory.categoryIcon)!''}"/>
+                        </div>
                         <input hidden type="text" name="categoryId" value="${(productCategory.categoryId)!''}">
                         <button type="submit" class="btn btn-default">提交</button>
                     </form>
