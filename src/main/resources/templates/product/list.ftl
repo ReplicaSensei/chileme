@@ -24,7 +24,7 @@
                             <th>类目</th>
                             <th>创建时间</th>
                             <th>修改时间</th>
-                            <th colspan="2">操作</th>
+                            <th colspan="3">操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -48,6 +48,7 @@
                                     <a href="/chileme/seller/product/on_sale?productId=${productInfo.productId}">上架</a>
                                 </#if>
                             </td>
+                            <td><a href="/chileme/seller/product/delete?productId=${productInfo.productId}">删除</a></td>
                         </tr>
                         </#list>
                         </tbody>

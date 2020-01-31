@@ -42,6 +42,22 @@ public class SellerCategoryController {
         return new ModelAndView("category/list");
     }
 
+    @RequestMapping("/delete")
+    public ModelAndView delete(@RequestParam(value = "categoryId", required = false) Integer categoryId,
+                               Map<String, Object> map) {
+
+        try {
+            categoryService.delete(categoryId);
+        } catch (ChilemeException e) {
+            map.put("msg", e.getMessage());
+            map.put("url", "/chileme/seller/category/list");
+            return new ModelAndView("common/error", map);
+        }
+
+        map.put("url", "/chileme/seller/category/list");
+        return new ModelAndView("common/success", map);
+    }
+
     /**
      * 展示
      * @param categoryId

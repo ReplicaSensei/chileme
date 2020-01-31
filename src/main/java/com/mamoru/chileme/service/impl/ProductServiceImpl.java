@@ -108,4 +108,10 @@ public class ProductServiceImpl implements ProductService {
         productInfo.setProductStatus(ProductStatusEnum.UP.getCode());
         return dao.save(productInfo);
     }
+
+    @Override
+    public void delete(String productId) {
+        ProductInfo productInfo = dao.findOne(productId);
+        dao.delete(productInfo);
+    }
 }

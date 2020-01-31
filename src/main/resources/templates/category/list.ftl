@@ -21,7 +21,7 @@
                             <th>图片</th>
                             <th>创建时间</th>
                             <th>修改时间</th>
-                            <th>操作</th>
+                            <th colspan="2">操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -35,6 +35,7 @@
                             <td>${category.createTime}</td>
                             <td>${category.updateTime}</td>
                             <td><a href="/chileme/seller/category/index?categoryId=${category.categoryId}">修改</a></td>
+                            <td><a href="/chileme/seller/category/delete?categoryId=${category.categoryId}">删除</a></td>
                         </tr>
                         </#list>
                         </tbody>

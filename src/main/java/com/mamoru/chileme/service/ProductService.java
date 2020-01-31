@@ -31,4 +31,6 @@ public interface ProductService {
     /** 上架. */
     ProductInfo onSale(String productId);
 
+    /** 删除. */
+    void delete(String productId);
 }

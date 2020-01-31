@@ -35,4 +35,10 @@ public class CategoryServiceImpl implements CategoryService {
     public ProductCategory save(ProductCategory productCategory) {
         return dao.save(productCategory);
     }
+
+    @Override
+    public void delete(Integer categoryId) {
+        ProductCategory productCategory = dao.findOne(categoryId);
+        dao.delete(productCategory);
+    }
 }

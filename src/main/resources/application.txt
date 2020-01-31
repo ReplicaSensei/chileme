@@ -1,0 +1,57 @@
+服务器上线:
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: zsr1401407
+    url: jdbc:mysql://localhost:3306/chileme?useSSL=false&serverTimezone=UTC
+  jpa:
+    show-sql: true
+  jackson:
+    default-property-inclusion: non_null
+  freemarker:
+    template-loader-path: classpath:/templates/
+    cache: false
+    charset: UTF-8
+    check-template-location: true
+    content-type: text/html; charset=utf-8
+    expose-request-attributes: true
+    expose-session-attributes: true
+    request-context-attribute: request
+  redis:
+    host: 127.0.0.1
+    port: 6379
+server:
+    context-path: /chileme
+    port: 8080
+projectUrl:
+  chileme: http://chileme.natapp1.cc
+
+
+本地调试:
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: zsr1401407..
+    url: jdbc:mysql://localhost:3306/chileme?useSSL=false&serverTimezone=UTC
+  jpa:
+    show-sql: true
+  jackson:
+    default-property-inclusion: non_null
+  freemarker:
+    template-loader-path: classpath:/templates/
+    cache: false
+    charset: UTF-8
+    check-template-location: true
+    content-type: text/html; charset=utf-8
+    expose-request-attributes: true
+    expose-session-attributes: true
+    request-context-attribute: request
+  redis:
+    host: 192.168.1.106
+    port: 6379
+server:
+    context-path: /chileme
+projectUrl:
+  chileme: http://chileme.natapp.cc

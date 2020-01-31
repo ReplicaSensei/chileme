@@ -99,6 +99,22 @@ public class SellerProductController {
         return new ModelAndView("common/success", map);
     }
 
+    @RequestMapping("/delete")
+    public ModelAndView delete(@RequestParam(value = "productId", required = false) String productId,
+                               Map<String, Object> map) {
+
+        try {
+            productService.delete(productId);
+        } catch (ChilemeException e) {
+            map.put("msg", e.getMessage());
+            map.put("url", "/chileme/seller/product/list");
+            return new ModelAndView("common/error", map);
+        }
+
+        map.put("url", "/chileme/seller/product/list");
+        return new ModelAndView("common/success", map);
+    }
+
     /**
      * 展示
      * @param productId
