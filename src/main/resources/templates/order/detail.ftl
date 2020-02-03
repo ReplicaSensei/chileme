@@ -58,9 +58,16 @@
             <#--操作-->
                 <div class="col-md-12 column">
                 <#if orderDTO.getOrderStatusEnum().message == "新订单">
-                    <a href="/chileme/seller/order/finish?orderId=${orderDTO.orderId}" type="button" class="btn btn-default btn-primary">完结订单</a>
                     <a href="/chileme/seller/order/cancel?orderId=${orderDTO.orderId}" type="button" class="btn btn-default btn-danger">取消订单</a>
                 </#if>
+                <#if orderDTO.getPayStatusEnum().message == "支付成功" && orderDTO.getOrderStatusEnum().message == "新订单">
+                    <a href="/chileme/seller/order/send?orderId=${orderDTO.orderId}" type="button" class="btn btn-default btn-primary">配送订单</a>
+                <#elseif orderDTO.getOrderStatusEnum().message == "配送中" && orderDTO.getPayStatusEnum().message == "支付成功">
+                    <a href="/chileme/seller/order/finish?orderId=${orderDTO.orderId}" type="button" class="btn btn-default btn-primary">完结订单</a>
+                <#else >
+                    <a href="/chileme/seller/order/delete?orderId=${orderDTO.orderId}" type="button" class="btn btn-default btn-primary">删除订单</a>
+                </#if>
+
                 </div>
             </div>
         </div>

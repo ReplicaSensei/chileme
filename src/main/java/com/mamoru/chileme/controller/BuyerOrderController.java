@@ -2,17 +2,20 @@ package com.mamoru.chileme.controller;
 
 import com.mamoru.chileme.converter.OrderForm2OrderDTOConverter;
 import com.mamoru.chileme.dto.OrderDTO;
+import com.mamoru.chileme.entity.RecInfo;
 import com.mamoru.chileme.enums.ResultEnum;
 import com.mamoru.chileme.exception.ChilemeException;
 import com.mamoru.chileme.form.OrderForm;
 import com.mamoru.chileme.service.BuyerService;
 import com.mamoru.chileme.service.OrderService;
+import com.mamoru.chileme.service.RecService;
 import com.mamoru.chileme.utils.ResultVOUtil;
 import com.mamoru.chileme.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
@@ -40,6 +43,9 @@ public class BuyerOrderController {
     @Autowired
     private BuyerService buyerService;
 
+    @Autowired
+    private RecService recService;
+
     //创建订单
     @PostMapping("/create")
     public ResultVO<Map<String, String>> create(@Valid OrderForm orderForm,
@@ -49,12 +55,14 @@ public class BuyerOrderController {
             throw new ChilemeException(ResultEnum.PARAM_ERROR.getCode(),
                     bindingResult.getFieldError().getDefaultMessage());
         }
+        RecInfo recInfo = recService.findOne(orderForm.getRecId());
         //转换成列表，一次可订多个菜品, 已在OrderForm2OrderDTOConvert中完成
-        OrderDTO orderDTO = OrderForm2OrderDTOConverter.convert(orderForm);
+        OrderDTO orderDTO = OrderForm2OrderDTOConverter.convert(orderForm, recInfo);
 
         if (CollectionUtils.isEmpty(orderDTO.getOrderDetailList())) {
             log.error("【创建订单】购物车不能为空");
-            throw new ChilemeException(ResultEnum.CART_EMPTY);
+            //throw new ChilemeException(ResultEnum.CART_EMPTY);
+            return ResultVOUtil.error(500, "购物车不能为空");
         }
 
         OrderDTO createResult = orderService.create(orderDTO);
@@ -70,10 +78,11 @@ public class BuyerOrderController {
                                          @RequestParam(value = "size", defaultValue = "10") Integer size) {
         if (StringUtils.isEmpty(openid)) {
             log.error("【查询订单列表】openid为空");
-            throw new ChilemeException(ResultEnum.PARAM_ERROR);
+            //throw new ChilemeException(ResultEnum.PARAM_ERROR);
+            return ResultVOUtil.error(500, "openid不能为空");
         }
-
-        PageRequest request = new PageRequest(page, size);
+        Sort sort=new Sort(Sort.Direction.DESC,"createTime");
+        PageRequest request = new PageRequest(page, size, sort);
         Page<OrderDTO> orderDTOPage = orderService.findList(openid, request);
 
         return ResultVOUtil.success(orderDTOPage.getContent());
@@ -94,6 +103,19 @@ public class BuyerOrderController {
                                      @RequestParam("orderId") String orderId) {
         buyerService.cancelOrder(openid, orderId);
         return ResultVOUtil.success();
+    }
+
+    //支付订单
+    @PostMapping("/pay")
+    public ResultVO<OrderDTO> pay(@RequestParam("openid") String openid,
+                                  @RequestParam("orderId") String orderId) {
+        Boolean result = buyerService.payOrder(openid, orderId);
+        if (result) {
+            return ResultVOUtil.success();
+        }
+        else {
+            return ResultVOUtil.error(500, "账户余额不足");
+        }
     }
 
 }

@@ -100,6 +100,41 @@ public class SellerOrderController {
         return new ModelAndView("order/detail", map);
     }
 
+    @RequestMapping("/delete")
+    public ModelAndView delete(@RequestParam(value = "orderId", required = false) String orderId,
+                               Map<String, Object> map) {
+
+        try {
+            orderService.delete(orderId);
+        } catch (ChilemeException e) {
+            map.put("msg", e.getMessage());
+            map.put("url", "/chileme/seller/order/list");
+            return new ModelAndView("common/error", map);
+        }
+
+        map.put("url", "/chileme/seller/order/list");
+        return new ModelAndView("common/success", map);
+    }
+
+    @GetMapping("/send")
+    public ModelAndView send(@RequestParam("orderId") String orderId,
+                               Map<String, Object> map) {
+        try {
+            OrderDTO orderDTO = orderService.findOne(orderId);
+            orderService.send(orderDTO);
+
+        } catch (ChilemeException e){
+            log.error("【卖家端改变商品状态】 商品已送出", e);
+            map.put("msg", e.getMessage());
+            map.put("url", "/chileme/seller/order/list");
+
+            return new ModelAndView("common/error", map);
+        }
+        map.put("msg", ResultEnum.SUCCESS.getMessage());
+        map.put("url", "/chileme/seller/order/list");
+        return new ModelAndView("common/success");
+    }
+
     /**
      * 完结订单
      * @param orderId

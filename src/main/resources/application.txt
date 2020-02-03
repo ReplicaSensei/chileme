@@ -4,7 +4,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: zsr1401407
-    url: jdbc:mysql://localhost:3306/chileme?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/chileme?useSSL=false&serverTimezone=GMT%2B8
   jpa:
     show-sql: true
   jackson:
@@ -34,7 +34,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: zsr1401407..
-    url: jdbc:mysql://localhost:3306/chileme?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/chileme?useSSL=false&serverTimezone=GMT%2B8
   jpa:
     show-sql: true
   jackson:

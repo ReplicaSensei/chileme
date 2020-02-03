@@ -11,7 +11,6 @@ import com.mamoru.chileme.entity.OrderDetail;
 import com.mamoru.chileme.enums.OrderStatusEnum;
 import com.mamoru.chileme.enums.PayStatusEnum;
 import com.mamoru.chileme.utils.EnumUtil;
-import com.mamoru.chileme.utils.serializer.Date2LongSerializer;
 import lombok.Data;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -45,11 +44,9 @@ public class OrderDTO {
     private String buyerOpenid;
 
     /** 创建时间. */
-    @JsonSerialize(using = Date2LongSerializer.class)
     private Date createTime;
 
     /** 更新时间. */
-    @JsonSerialize(using = Date2LongSerializer.class)
     private Date updateTime;
 
     private List<OrderDetail> orderDetailList;

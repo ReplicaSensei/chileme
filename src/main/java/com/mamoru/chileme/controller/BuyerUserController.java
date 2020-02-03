@@ -6,6 +6,7 @@ import com.mamoru.chileme.entity.BuyerInfo;
 import com.mamoru.chileme.enums.ResultEnum;
 import com.mamoru.chileme.exception.ChilemeException;
 import com.mamoru.chileme.form.BuyerForm;
+import com.mamoru.chileme.form.PayForm;
 import com.mamoru.chileme.service.BuyerService;
 import com.mamoru.chileme.utils.CookieUtil;
 import com.mamoru.chileme.utils.KeyUtil;
@@ -60,16 +61,18 @@ public class BuyerUserController {
         }
         if (buyerService.findBuyerInfoByOpenid(buyerForm.getOpenid())!=null){
             log.error("【用户登录】openid已存在, buyerForm={}", buyerForm);
-            throw new ChilemeException(ResultEnum.USER_EXIST);
+            //throw new ChilemeException(ResultEnum.USER_EXIST);
+            return ResultVOUtil.error(500, "openid已存在");
         }
         if (buyerForm.getOpenid().equals("")||buyerForm.getPassword().equals("")||buyerForm.getUsername().equals("")){
             log.error("【用户登录】用户信息不完整");
-            throw new ChilemeException(ResultEnum.PARAM_ERROR);
+            //throw new ChilemeException(ResultEnum.PARAM_ERROR);
+            return ResultVOUtil.error(500, "用户信息不完整");
         }
         BuyerInfo buyerInfo = new BuyerInfo();
         BeanUtils.copyProperties(buyerForm, buyerInfo);
         buyerInfo.setBuyerId(KeyUtil.genUniqueKey());
-        buyerInfo.setAccount(new BigDecimal(0));
+        buyerInfo.setAccount(new BigDecimal(500));
 
         BuyerInfo registerResult = buyerService.save(buyerInfo);
         Map<String, Object> map = new HashMap<>();
@@ -126,7 +129,6 @@ public class BuyerUserController {
         }
 
     }
-    //TODO
     @GetMapping("/logout")
     @ResponseBody
     public LoginVO logout(HttpServletRequest request,
@@ -148,5 +150,19 @@ public class BuyerUserController {
         return LoginVOUtil.success(logout);
 
     }
+
+    @PostMapping("/pay")
+    @ResponseBody
+    public ResultVO pay(@Valid PayForm payForm,
+                        BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            log.error("【用户登录】参数不正确");
+            throw new ChilemeException(ResultEnum.PARAM_ERROR.getCode(),
+                    bindingResult.getFieldError().getDefaultMessage());
+        }
+        buyerService.pay(payForm.getOpenid(), payForm.getPayPrice());
+        return ResultVOUtil.success();
+    }
+
 
 }

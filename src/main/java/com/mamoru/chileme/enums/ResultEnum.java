@@ -47,7 +47,9 @@ public enum ResultEnum implements CodeEnum {
 
     USER_EXIST(30, "openid已存在"),
 
+    ACCOUNT_NOT_ENOUGH(31, "余额不足"),
     ;
+
 
     private Integer code;
 

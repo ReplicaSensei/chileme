@@ -12,10 +12,13 @@ import com.mamoru.chileme.enums.OrderStatusEnum;
 import com.mamoru.chileme.enums.PayStatusEnum;
 import com.mamoru.chileme.enums.ResultEnum;
 import com.mamoru.chileme.exception.ChilemeException;
+import com.mamoru.chileme.service.BuyerService;
 import com.mamoru.chileme.service.OrderService;
 import com.mamoru.chileme.service.ProductService;
 import com.mamoru.chileme.service.WebSocket;
 import com.mamoru.chileme.utils.KeyUtil;
+import com.mamoru.chileme.utils.ResultVOUtil;
+import com.mamoru.chileme.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +46,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderMasterDao orderMasterDao;
+
+    @Autowired
+    private BuyerService buyerService;
 
     @Autowired
     private WebSocket webSocket;
@@ -158,7 +164,7 @@ public class OrderServiceImpl implements OrderService {
 
         //如果已支付, 需要退款
         if (orderDTO.getPayStatus().equals(PayStatusEnum.SUCCESS.getCode())) {
-            //TODO
+            buyerService.increaseAmount(orderDTO);
         }
         return orderDTO;
     }
@@ -167,7 +173,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public OrderDTO finish(OrderDTO orderDTO) {
         //判断订单状态
-        if (!orderDTO.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())) {
+        if (!orderDTO.getOrderStatus().equals(OrderStatusEnum.SENDING.getCode())) {
             log.error("【完结订单】订单状态不正确, orderId={}, orderStatus={}", orderDTO.getOrderId(), orderDTO.getOrderStatus());
             throw new ChilemeException(ResultEnum.ORDER_STATUS_ERROR);
         }
@@ -187,7 +193,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderDTO paid(OrderDTO orderDTO) {
+    public boolean paid(OrderDTO orderDTO) {
         //判断订单状态
         if (!orderDTO.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())) {
             log.error("【订单支付完成】订单状态不正确, orderId={}, orderStatus={}", orderDTO.getOrderId(), orderDTO.getOrderStatus());
@@ -200,17 +206,29 @@ public class OrderServiceImpl implements OrderService {
             throw new ChilemeException(ResultEnum.ORDER_PAY_STATUS_ERROR);
         }
 
-        //修改支付状态
-        orderDTO.setPayStatus(PayStatusEnum.SUCCESS.getCode());
-        OrderMaster orderMaster = new OrderMaster();
-        BeanUtils.copyProperties(orderDTO, orderMaster);
-        OrderMaster updateResult = orderMasterDao.save(orderMaster);
-        if (updateResult == null) {
-            log.error("【订单支付完成】更新失败, orderMaster={}", orderMaster);
-            throw new ChilemeException(ResultEnum.ORDER_UPDATE_FAIL);
+        //判断账户余额
+        if (buyerService.decreaseAmount(orderDTO)==false) {
+            log.error("【订单支付完成】余额不足");
+            return false;
+        }
+        else{
+            //修改支付状态
+            orderDTO.setPayStatus(PayStatusEnum.SUCCESS.getCode());
+
+            OrderMaster orderMaster = new OrderMaster();
+            BeanUtils.copyProperties(orderDTO, orderMaster);
+            OrderMaster updateResult = orderMasterDao.save(orderMaster);
+            if (updateResult == null) {
+                log.error("【订单支付完成】更新失败, orderMaster={}", orderMaster);
+                throw new ChilemeException(ResultEnum.ORDER_UPDATE_FAIL);
+
+            }
+            //扣除账户余额
+            buyerService.decreaseAmount(orderDTO);
+            return true;
         }
 
-        return orderDTO;
+
     }
 
     @Override
@@ -222,5 +240,31 @@ public class OrderServiceImpl implements OrderService {
         return new PageImpl<>(orderDTOList, pageable, orderMasterPage.getTotalElements());
     }
 
+    @Override
+    public OrderDTO send(OrderDTO orderDTO) {
+        //判断支付状态
+        if (orderDTO.getPayStatus().equals(PayStatusEnum.WAIT.getCode())) {
+            log.error("【送出订单】订单未付款");
+            throw new ChilemeException(ResultEnum.ORDER_PAY_STATUS_ERROR);
+        }
 
+        //修改订单状态
+        orderDTO.setOrderStatus(OrderStatusEnum.SENDING.getCode());
+        OrderMaster orderMaster = new OrderMaster();
+        BeanUtils.copyProperties(orderDTO, orderMaster);
+        OrderMaster updateResult = orderMasterDao.save(orderMaster);
+        if (updateResult == null) {
+            log.error("【送出订单】更新失败, orderMaster={}", orderMaster);
+            throw new ChilemeException(ResultEnum.ORDER_UPDATE_FAIL);
+        }
+        return orderDTO;
+    }
+
+    @Override
+    public void delete(String orderId) {
+        OrderMaster orderMaster = orderMasterDao.findByOrderId(orderId);
+        List<OrderDetail> orderDetailList = orderDetailDao.findByOrderId(orderId);
+        orderDetailDao.delete(orderDetailList);
+        orderMasterDao.delete(orderMaster);
+    }
 }

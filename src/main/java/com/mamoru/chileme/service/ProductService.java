@@ -2,6 +2,7 @@ package com.mamoru.chileme.service;
 
 import com.mamoru.chileme.dto.CartDTO;
 import com.mamoru.chileme.entity.ProductInfo;
+import com.mamoru.chileme.vo.ResultVO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

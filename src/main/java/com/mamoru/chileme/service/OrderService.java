@@ -2,6 +2,7 @@ package com.mamoru.chileme.service;
 
 import com.mamoru.chileme.dto.OrderDTO;
 import com.mamoru.chileme.entity.OrderMaster;
+import com.mamoru.chileme.vo.ResultVO;
 import org.hibernate.criterion.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,9 +25,13 @@ public interface OrderService {
     OrderDTO finish(OrderDTO orderDTO);
 
     /** 支付订单. */
-    OrderDTO paid(OrderDTO orderDTO);
+    boolean paid(OrderDTO orderDTO);
 
     /** 查询订单列表. */
     Page<OrderDTO> findList(Pageable pageable);
 
+    /** 送出订单. */
+    OrderDTO send(OrderDTO orderDTO);
+
+    void delete(String orderId);
 }

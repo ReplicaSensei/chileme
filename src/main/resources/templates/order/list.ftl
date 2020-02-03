@@ -20,7 +20,7 @@
                                 <th>订单状态</th>
                                 <th>支付状态</th>
                                 <th>创建时间</th>
-                                <th colspan="2">操作</th>
+                                <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -35,11 +35,6 @@
                                     <td>${orderDTO.getPayStatusEnum().getMessage()}</td>
                                     <td>${orderDTO.createTime}</td>
                                     <td><a href="/chileme/seller/order/detail?orderId=${orderDTO.orderId}">详情</a></td>
-                                    <td>
-                                        <#if orderDTO.getOrderStatusEnum().message == "新订单">
-                                            <a href="/chileme/seller/order/cancel?orderId=${orderDTO.orderId}">取消</a>
-                                        </#if>
-                                    </td>
                                 </tr>
                             </#list>
                             </tbody>

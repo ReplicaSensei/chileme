@@ -7,9 +7,13 @@ import com.mamoru.chileme.enums.ResultEnum;
 import com.mamoru.chileme.exception.ChilemeException;
 import com.mamoru.chileme.service.BuyerService;
 import com.mamoru.chileme.service.OrderService;
+import com.mamoru.chileme.utils.ResultVOUtil;
+import com.mamoru.chileme.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 
 @Service
 @Slf4j
@@ -36,6 +40,20 @@ public class BuyerServiceImpl implements BuyerService {
         return orderService.cancel(orderDTO);
     }
 
+    @Override
+    public Boolean payOrder(String openid, String orderId) {
+            OrderDTO orderDTO = checkOrderOwner(openid, orderId);
+            if(orderDTO==null){
+                log.error("【取消订单】查不到该订单， orderId={}", orderId);
+                throw new ChilemeException(ResultEnum.ORDER_NOT_EXIST);
+            }
+            Boolean result = orderService.paid(orderDTO);
+            if (result) {
+                return true;
+            }
+            return false;
+    }
+
     private OrderDTO checkOrderOwner(String openid, String orderId) {
         OrderDTO orderDTO = orderService.findOne(orderId);
         if (orderDTO == null) {
@@ -57,5 +75,45 @@ public class BuyerServiceImpl implements BuyerService {
     @Override
     public BuyerInfo findBuyerInfoByOpenid(String openid) {
         return dao.findByOpenid(openid);
+    }
+
+    public BuyerServiceImpl() {
+        super();
+    }
+
+    @Override
+    public void increaseAmount(OrderDTO orderDTO) {
+        BuyerInfo buyerInfo = findBuyerInfoByOpenid(orderDTO.getBuyerOpenid());
+        if (buyerInfo == null) {
+            throw new ChilemeException(ResultEnum.USER_NOT_EXIST);
+        }
+        BigDecimal result = buyerInfo.getAccount().add(orderDTO.getOrderAmount());
+        buyerInfo.setAccount(result);
+        dao.save(buyerInfo);
+    }
+
+    @Override
+    public boolean decreaseAmount(OrderDTO orderDTO) {
+        BuyerInfo buyerInfo = findBuyerInfoByOpenid(orderDTO.getBuyerOpenid());
+        if (buyerInfo == null) {
+            throw new ChilemeException(ResultEnum.USER_NOT_EXIST);
+        }
+        BigDecimal result = buyerInfo.getAccount().subtract(orderDTO.getOrderAmount());
+        if (result.compareTo(new BigDecimal(0))==-1) {
+            //throw new ChilemeException(ResultEnum.ACCOUNT_NOT_ENOUGH);
+            return false;
+        }
+        else {
+            buyerInfo.setAccount(result);
+            dao.save(buyerInfo);
+            return true;
+        }
+    }
+
+    @Override
+    public void pay(String openid, BigDecimal bigDecimal) {
+        BuyerInfo buyerInfo = findBuyerInfoByOpenid(openid);
+        buyerInfo.setAccount(buyerInfo.getAccount().add(bigDecimal));
+        dao.save(buyerInfo);
     }
 }

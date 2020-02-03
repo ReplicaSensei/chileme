@@ -17,7 +17,7 @@ public class ChilemeExceptionHandler {
     @ExceptionHandler(value = ChilemeLoginException.class)
     public ModelAndView handlerLoginException() {
         return new ModelAndView("redirect:"
-        .concat(projectUrlConfig.getChileme())
+        //.concat(projectUrlConfig.getChileme())
         .concat("/chileme/seller"));
     }
 }
