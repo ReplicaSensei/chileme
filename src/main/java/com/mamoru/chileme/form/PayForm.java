@@ -9,6 +9,6 @@ public class PayForm {
 
     public String openid;
 
-    BigDecimal payPrice;
+    BigDecimal payNumber;
 
 }

@@ -10,7 +10,6 @@ import com.mamoru.chileme.utils.ResultVOUtil;
 import com.mamoru.chileme.vo.ResultVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -67,6 +66,17 @@ public class BuyerRecController {
             return ResultVOUtil.error(500, "保存失败");
         }
         return ResultVOUtil.success(recInfo);
+    }
+
+    @PostMapping("/del")
+    public ResultVO delete (@Valid RecForm form,
+                            BindingResult bindingResult) {
+        RecInfo recInfo = recService.findOne(form.getRecId());
+        if (recInfo==null) {
+            return ResultVOUtil.error(500, "收货信息不存在");
+        }
+        recService.delete(recInfo);
+        return ResultVOUtil.success();
     }
 
 }

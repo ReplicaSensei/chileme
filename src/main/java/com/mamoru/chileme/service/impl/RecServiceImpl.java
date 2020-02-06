@@ -28,4 +28,9 @@ public class RecServiceImpl implements RecService {
     public RecInfo save(RecInfo recInfo) {
         return dao.save(recInfo);
     }
+
+    @Override
+    public void delete(RecInfo recInfo) {
+        dao.delete(recInfo);
+    }
 }

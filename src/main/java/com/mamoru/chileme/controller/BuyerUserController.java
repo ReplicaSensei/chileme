@@ -151,18 +151,7 @@ public class BuyerUserController {
 
     }
 
-    @PostMapping("/pay")
-    @ResponseBody
-    public ResultVO pay(@Valid PayForm payForm,
-                        BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            log.error("【用户登录】参数不正确");
-            throw new ChilemeException(ResultEnum.PARAM_ERROR.getCode(),
-                    bindingResult.getFieldError().getDefaultMessage());
-        }
-        buyerService.pay(payForm.getOpenid(), payForm.getPayPrice());
-        return ResultVOUtil.success();
-    }
+
 
 
 }

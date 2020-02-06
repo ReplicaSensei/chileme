@@ -11,4 +11,6 @@ public interface RecService {
     RecInfo findOne(String recId);
 
     RecInfo save(RecInfo recInfo);
+
+    void delete(RecInfo recInfo);
 }

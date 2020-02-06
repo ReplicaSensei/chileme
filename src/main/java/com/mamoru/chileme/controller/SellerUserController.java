@@ -101,7 +101,7 @@ public class SellerUserController {
             session.setMaxInactiveInterval(120*60);//以秒为单位，即在没有活动120分钟后，session将失效
 
             return new ModelAndView("redirect:" +
-                    //projectUrlConfig.getChileme() + "/chileme" +
+                    projectUrlConfig.getChileme() + "/chileme" +
                     "/seller/order/list");
         }
     }

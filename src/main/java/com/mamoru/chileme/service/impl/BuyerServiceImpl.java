@@ -111,9 +111,9 @@ public class BuyerServiceImpl implements BuyerService {
     }
 
     @Override
-    public void pay(String openid, BigDecimal bigDecimal) {
+    public void pay(String openid, BigDecimal payNumber) {
         BuyerInfo buyerInfo = findBuyerInfoByOpenid(openid);
-        buyerInfo.setAccount(buyerInfo.getAccount().add(bigDecimal));
+        buyerInfo.setAccount(buyerInfo.getAccount().add(payNumber));
         dao.save(buyerInfo);
     }
 }

@@ -2,7 +2,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
-    password: zsr1401407..
+    password: zsr1401407
     url: jdbc:mysql://localhost:3306/chileme?useSSL=false&serverTimezone=GMT%2B8
   jpa:
     show-sql: true
@@ -18,9 +18,10 @@ spring:
     expose-session-attributes: true
     request-context-attribute: request
   redis:
-    host: 192.168.1.106
+    host: 127.0.0.1
     port: 6379
 server:
   context-path: /chileme
+  port: 8080
 projectUrl:
-  chileme: http://chileme.natapp.cc
+  chileme: http://chileme.natapp1.cc

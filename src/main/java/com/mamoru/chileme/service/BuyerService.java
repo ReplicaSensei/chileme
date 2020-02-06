@@ -30,6 +30,7 @@ public interface BuyerService {
     //减少余额
     boolean decreaseAmount(OrderDTO orderDTO);
 
-    void pay(String openid, BigDecimal bigDecimal);
+    //买家充值
+    void pay(String openid, BigDecimal payNumber);
 
 }
