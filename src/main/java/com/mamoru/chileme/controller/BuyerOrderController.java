@@ -9,7 +9,9 @@ import com.mamoru.chileme.form.OrderForm;
 import com.mamoru.chileme.service.BuyerService;
 import com.mamoru.chileme.service.OrderService;
 import com.mamoru.chileme.service.RecService;
+import com.mamoru.chileme.utils.OrderVOUtil;
 import com.mamoru.chileme.utils.ResultVOUtil;
+import com.mamoru.chileme.vo.OrderVO;
 import com.mamoru.chileme.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,19 +75,20 @@ public class BuyerOrderController {
     }
     //订单列表
     @GetMapping("/list")
-    public ResultVO<List<OrderDTO>> list(@RequestParam("openid") String openid,
-                                         @RequestParam(value = "page", defaultValue = "0") Integer page,
-                                         @RequestParam(value = "size", defaultValue = "10") Integer size) {
+    public OrderVO<List<OrderDTO>> list(@RequestParam("openid") String openid,
+                                        @RequestParam(value = "page", defaultValue = "0") Integer page,
+                                        @RequestParam(value = "size", defaultValue = "10") Integer size) {
         if (StringUtils.isEmpty(openid)) {
             log.error("【查询订单列表】openid为空");
             //throw new ChilemeException(ResultEnum.PARAM_ERROR);
-            return ResultVOUtil.error(500, "openid不能为空");
+            return OrderVOUtil.error(500, "openid不能为空");
         }
         Sort sort=new Sort(Sort.Direction.DESC,"createTime");
-        PageRequest request = new PageRequest(page, size, sort);
+        PageRequest request = new PageRequest(page-1, size, sort);
         Page<OrderDTO> orderDTOPage = orderService.findList(openid, request);
+        Integer total = orderService.findAllList(openid).size();
 
-        return ResultVOUtil.success(orderDTOPage.getContent());
+        return OrderVOUtil.success(orderDTOPage.getContent(), page, size, total);
 
     }
     //订单详情

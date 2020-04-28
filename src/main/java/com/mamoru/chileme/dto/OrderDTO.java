@@ -43,6 +43,9 @@ public class OrderDTO {
     /** 微信openid. */
     private String buyerOpenid;
 
+    /** 订单备注. */
+    private String psInfo;
+
     /** 创建时间. */
     private Date createTime;
 

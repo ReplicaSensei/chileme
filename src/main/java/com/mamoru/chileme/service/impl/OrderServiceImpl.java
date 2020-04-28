@@ -118,9 +118,16 @@ public class OrderServiceImpl implements OrderService {
         OrderDTO orderDTO = new OrderDTO();
         BeanUtils.copyProperties(orderMaster, orderDTO);
         orderDTO.setOrderDetailList(orderDetailList);
+        orderDTO.setPsInfo(orderMaster.getPsInfo());
 
         return orderDTO;
 
+    }
+
+    @Override
+    public List<OrderDTO> findAllList(String buyerOpenid) {
+        List<OrderDTO> orderDTOList = OrderMaster2OrderDTOConverter.convert(orderMasterDao.findByBuyerOpenid(buyerOpenid));
+        return orderDTOList;
     }
 
     @Override

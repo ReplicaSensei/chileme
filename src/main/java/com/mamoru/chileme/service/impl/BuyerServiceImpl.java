@@ -7,8 +7,6 @@ import com.mamoru.chileme.enums.ResultEnum;
 import com.mamoru.chileme.exception.ChilemeException;
 import com.mamoru.chileme.service.BuyerService;
 import com.mamoru.chileme.service.OrderService;
-import com.mamoru.chileme.utils.ResultVOUtil;
-import com.mamoru.chileme.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

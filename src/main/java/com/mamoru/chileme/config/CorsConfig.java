@@ -22,7 +22,6 @@ public class CorsConfig {
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
         FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
-        // 这个顺序很重要哦，为避免麻烦请设置在最前
         bean.setOrder(0);
         return bean;
     }

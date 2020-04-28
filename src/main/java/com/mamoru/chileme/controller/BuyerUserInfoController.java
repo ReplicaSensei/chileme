@@ -27,6 +27,9 @@ public class BuyerUserInfoController {
             log.error("【用户信息】查询不到此用户");
             return ResultVOUtil.error(500, "查询不到此用户");
         }
+
+
+
         return ResultVOUtil.success(buyerInfo);
     }
 }

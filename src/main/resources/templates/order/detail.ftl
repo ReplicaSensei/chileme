@@ -18,12 +18,14 @@
                         <tr>
                             <th>订单id</th>
                             <th>订单总金额</th>
+                            <th>订单备注</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
                             <td>${orderDTO.orderId}</td>
                             <td>${orderDTO.orderAmount}</td>
+                            <td>${orderDTO.psInfo}</td>
                         </tr>
                         </tbody>
                     </table>

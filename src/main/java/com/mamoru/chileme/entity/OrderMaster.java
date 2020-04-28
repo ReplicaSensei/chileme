@@ -30,6 +30,9 @@ public class OrderMaster {
     /** 订单金额. */
     private BigDecimal orderAmount;
 
+    /** 订单备注. */
+    private String psInfo;
+
     /** 订单状态, 默认为0新下单 */
     private Integer orderStatus = OrderStatusEnum.NEW.getCode();
 

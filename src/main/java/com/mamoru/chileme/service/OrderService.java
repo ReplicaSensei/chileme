@@ -7,6 +7,8 @@ import org.hibernate.criterion.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface OrderService {
 
     /** 创建订单. */
@@ -17,6 +19,9 @@ public interface OrderService {
 
     /** 查询订单列表. */
     Page<OrderDTO> findList(String buyerOpenid, Pageable pageable);
+
+    /** 查询全部订单. */
+    List<OrderDTO> findAllList(String buyerOpenid);
 
     /** 取消订单. */
     OrderDTO cancel(OrderDTO orderDTO);

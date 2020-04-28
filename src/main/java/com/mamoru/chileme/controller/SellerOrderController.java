@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -89,6 +90,9 @@ public class SellerOrderController {
         OrderDTO orderDTO = new OrderDTO();
         try {
             orderDTO = orderService.findOne(orderId);
+            if(StringUtils.isEmpty(orderDTO.getPsInfo())) {
+                orderDTO.setPsInfo("无");
+            }
         }catch (ChilemeException e) {
             log.error("【卖家端查询订单详情】发生异常{}", e);
             map.put("msg", e.getMessage());
