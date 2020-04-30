@@ -20,7 +20,6 @@ public class BuyerCategoryController {
 
     @Autowired
     private CategoryService categoryService;
-
     /**
      * 列表
      * @param
